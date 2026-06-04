@@ -4,8 +4,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(BASE_DIR))
 
-from src.analysis.sales_estimator import estimate_steam_sales
-from src.data.steam_review_fetcher import fetch_review_summary
+from src.fighting_game_analysis.analysis.sales_estimator import estimate_steam_sales
+from src.fighting_game_analysis.data.steam_review_fetcher import fetch_review_summary
 
 
 APP_IDS = {
