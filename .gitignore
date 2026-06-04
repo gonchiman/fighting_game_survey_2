@@ -38,6 +38,9 @@ blob-report/
 data/
 data/games/*.csv
 
+# Generated outputs
+outputs/
+
 # OS/editor files
 .DS_Store
 Thumbs.db
