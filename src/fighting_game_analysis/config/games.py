@@ -15,7 +15,7 @@ class Game:
         return RAW_DATA_DIR / f"{filename}.csv"
 
 
-GAMES = [
+MAIN_GAMES = [
     Game("Street Fighter V", 310950),
     Game("TEKKEN 7", 389730),
     Game("DRAGON BALL FighterZ", 678950),
@@ -25,5 +25,10 @@ GAMES = [
     Game("Street Fighter 6", 1364780),
     Game("TEKKEN 8", 1778820),
     Game("Granblue Fantasy Versus: Rising", 2157560),
+]
+
+EXCLUDED_GAMES = [
     Game("Granblue Fantasy: Versus", 1090630),
 ]
+
+GAMES = MAIN_GAMES
