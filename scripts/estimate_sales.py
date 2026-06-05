@@ -11,7 +11,6 @@ from fighting_game_analysis.data.steam_review_fetcher import fetch_review_summar
 
 
 def main() -> None:
-    """設定済みゲームの Steam 推定販売本数を出力します。"""
     for game in GAMES:
         summary = fetch_review_summary(game.app_id)
         total_reviews = summary["total_reviews"]

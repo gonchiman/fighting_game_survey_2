@@ -9,17 +9,6 @@ from fighting_game_analysis.config.urls import STEAM_CHARTS_APP_BASE_URL
 
 
 def fetch_monthly_stats(game: Game) -> pd.DataFrame:
-    """Steam Charts からゲームの月次統計テーブルを取得します。
-
-    Args:
-        game: 取得対象のゲーム。
-
-    Returns:
-        Steam Charts の月次統計テーブル。
-
-    Raises:
-        ValueError: ページ内に統計テーブルが見つからない場合。
-    """
     url = urljoin(STEAM_CHARTS_APP_BASE_URL, str(game.app_id))
 
     with sync_playwright() as p:
@@ -47,11 +36,6 @@ def fetch_monthly_stats(game: Game) -> pd.DataFrame:
 
 
 def save_monthly_stats_csv(game: Game) -> None:
-    """ゲームの月次統計を取得して CSV に保存します。
-
-    Args:
-        game: 保存対象のゲーム。
-    """
     game.csv_path.parent.mkdir(parents=True, exist_ok=True)
 
     df = fetch_monthly_stats(game)

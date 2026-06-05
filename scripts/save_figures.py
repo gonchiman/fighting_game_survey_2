@@ -17,7 +17,6 @@ from fighting_game_analysis.visualization.plots import (
 
 
 def main() -> None:
-    """保存済み CSV から設定済みゲームの推移グラフを作成します。"""
     for game in GAMES:
         df = load_monthly_stats_csv(game)
         df = clean_monthly_stats(df)

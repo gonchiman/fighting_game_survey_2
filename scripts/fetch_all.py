@@ -11,7 +11,6 @@ from fighting_game_analysis.data.steam_charts_fetcher import save_monthly_stats_
 
 
 def main() -> None:
-    """設定済みゲームの月次統計 CSV を取得して保存します。"""
     for game in GAMES:
         save_monthly_stats_csv(game)
         print(f"Saved: {game.title}")

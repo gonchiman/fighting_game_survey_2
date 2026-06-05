@@ -4,14 +4,6 @@ from fighting_game_analysis.config.urls import STEAM_REVIEWS_BASE_URL
 
 
 def fetch_review_summary(app_id: int) -> dict:
-    """Steam のレビュー概要を取得します。
-
-    Args:
-        app_id: Steam アプリ ID。
-
-    Returns:
-        Steam API の `query_summary` データ。
-    """
     url = f"{STEAM_REVIEWS_BASE_URL}{app_id}"
     params = {
         "json": 1,

@@ -4,7 +4,6 @@ from fighting_game_analysis.data.steam_charts_cleaner import clean_monthly_stats
 
 
 def test_clean_monthly_stats_removes_summary_rows_and_sorts_by_date():
-    """集計行が除外され、月次データが日付順に並ぶことを確認します。"""
     df = pd.DataFrame(
         {
             "Month": ["March 2024", "Last 30 Days", "January 2024", "February 2024"],
@@ -22,7 +21,6 @@ def test_clean_monthly_stats_removes_summary_rows_and_sorts_by_date():
 
 
 def test_clean_monthly_stats_drops_rows_with_invalid_player_counts():
-    """平均プレイヤー数が数値でない行が除外されることを確認します。"""
     df = pd.DataFrame(
         {
             "Month": ["January 2024", "February 2024"],
@@ -37,7 +35,6 @@ def test_clean_monthly_stats_drops_rows_with_invalid_player_counts():
 
 
 def test_clean_monthly_stats_does_not_mutate_input():
-    """クリーニング時に入力データが変更されないことを確認します。"""
     df = pd.DataFrame(
         {
             "Month": ["January 2024"],
