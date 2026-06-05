@@ -18,5 +18,5 @@ dependencies = [
 where = ["src"]
 
 [tool.pytest.ini_options]
-testpaths = ["pytest"]
-pythonpath = ["."]
+testpaths = ["tests"]
+pythonpath = ["src"]
