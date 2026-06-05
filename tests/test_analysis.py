@@ -5,7 +5,7 @@ from fighting_game_analysis.analysis.sales_estimator import estimate_steam_sales
 
 
 def test_add_estimated_play_hours_uses_month_length_and_cumulative_sum():
-    """Check monthly play hours and cumulative play hours are calculated correctly."""
+    """月ごとと累積の推定プレイ時間が正しく計算されることを確認します。"""
     df = pd.DataFrame(
         {
             "Date": pd.to_datetime(["2024-02-01", "2024-03-01"]),
@@ -21,7 +21,7 @@ def test_add_estimated_play_hours_uses_month_length_and_cumulative_sum():
 
 
 def test_add_estimated_play_hours_does_not_mutate_input():
-    """Check estimated play-hour columns are added to a copy of the input."""
+    """入力データが変更されないことを確認します。"""
     df = pd.DataFrame(
         {
             "Date": pd.to_datetime(["2024-01-01"]),
@@ -37,10 +37,10 @@ def test_add_estimated_play_hours_does_not_mutate_input():
 
 
 def test_estimate_steam_sales_uses_default_multiplier():
-    """Check the default review-to-sales multiplier is used."""
+    """デフォルト倍率で推定販売本数が計算されることを確認します。"""
     assert estimate_steam_sales(100) == 3500
 
 
 def test_estimate_steam_sales_accepts_custom_multiplier():
-    """Check a custom review-to-sales multiplier can be provided."""
+    """任意の倍率で推定販売本数が計算されることを確認します。"""
     assert estimate_steam_sales(100, multiplier=42) == 4200

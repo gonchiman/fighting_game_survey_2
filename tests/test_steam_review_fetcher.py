@@ -4,26 +4,43 @@ from fighting_game_analysis.data import steam_review_fetcher
 
 class FakeResponse:
     def __init__(self, payload):
-        """Store fake response payload and call-tracking state."""
+        """フェイクレスポンスの内容と呼び出し状態を保持します。
+
+        Args:
+            payload: `json()` で返すデータ。
+        """
         self.payload = payload
         self.raise_for_status_called = False
 
     def raise_for_status(self):
-        """Record that status validation was requested."""
+        """ステータス検証が呼ばれたことを記録します。"""
         self.raise_for_status_called = True
 
     def json(self):
-        """Return the fake JSON response payload."""
+        """フェイクの JSON レスポンスを返します。
+
+        Returns:
+            初期化時に渡されたデータ。
+        """
         return self.payload
 
 
 def test_fetch_review_summary_requests_expected_endpoint(monkeypatch):
-    """Check review summaries are requested with the expected endpoint and params."""
+    """レビュー概要が期待した URL とパラメータで取得されることを確認します。"""
     response = FakeResponse({"query_summary": {"total_reviews": 1234}})
     captured = {}
 
     def fake_get(url, params, timeout):
-        """Capture request arguments and return a fake response."""
+        """リクエスト引数を記録してフェイクレスポンスを返します。
+
+        Args:
+            url: リクエスト URL。
+            params: クエリパラメータ。
+            timeout: タイムアウト秒数。
+
+        Returns:
+            フェイクレスポンス。
+        """
         captured["url"] = url
         captured["params"] = params
         captured["timeout"] = timeout

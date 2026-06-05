@@ -11,7 +11,11 @@ class Game:
 
     @property
     def csv_path(self) -> Path:
-        """Return the raw monthly-stats CSV path for this game."""
+        """ゲームの月次統計 CSV パスを返します。
+
+        Returns:
+            生データ CSV の保存先パス。
+        """
         filename = self.title.lower().replace(" ", "_").replace(":", "").replace("-", "_")
         return RAW_DATA_DIR / f"{filename}.csv"
 

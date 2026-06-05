@@ -11,7 +11,13 @@ def save_avg_players_plot(
     df: pd.DataFrame,
     output_path: Path,
 ) -> None:
-    """Save a line plot of monthly average players for a game."""
+    """月間平均プレイヤー数の折れ線グラフを保存します。
+
+    Args:
+        game: グラフ化するゲーム。
+        df: `Date` と `Avg. Players` を含む月次データ。
+        output_path: 画像の保存先パス。
+    """
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     plt.figure(figsize=(12, 6))
@@ -32,7 +38,13 @@ def save_cumulative_play_hours_plot(
     df: pd.DataFrame,
     output_path: Path,
 ) -> None:
-    """Save a line plot of cumulative estimated play hours for a game."""
+    """累積推定プレイ時間の折れ線グラフを保存します。
+
+    Args:
+        game: グラフ化するゲーム。
+        df: `Date` と `Cumulative Estimated Play Hours` を含む月次データ。
+        output_path: 画像の保存先パス。
+    """
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     plt.figure(figsize=(12, 6))
