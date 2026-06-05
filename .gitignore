@@ -36,6 +36,7 @@ blob-report/
 
 # Generated outputs
 outputs/
+/data/
 
 # OS/editor files
 .DS_Store
