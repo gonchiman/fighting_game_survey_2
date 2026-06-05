@@ -11,6 +11,7 @@ class Game:
 
     @property
     def csv_path(self) -> Path:
+        """Return the raw monthly-stats CSV path for this game."""
         filename = self.title.lower().replace(" ", "_").replace(":", "").replace("-", "_")
         return RAW_DATA_DIR / f"{filename}.csv"
 

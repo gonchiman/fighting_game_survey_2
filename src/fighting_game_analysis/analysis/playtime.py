@@ -2,6 +2,7 @@ import pandas as pd
 
 
 def add_estimated_play_hours(df: pd.DataFrame) -> pd.DataFrame:
+    """Add monthly and cumulative estimated play-hour columns to a data frame."""
     df = df.copy()
 
     df["Hours in Month"] = df["Date"].dt.days_in_month * 24

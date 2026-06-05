@@ -11,6 +11,7 @@ def save_avg_players_plot(
     df: pd.DataFrame,
     output_path: Path,
 ) -> None:
+    """Save a line plot of monthly average players for a game."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     plt.figure(figsize=(12, 6))
@@ -31,6 +32,7 @@ def save_cumulative_play_hours_plot(
     df: pd.DataFrame,
     output_path: Path,
 ) -> None:
+    """Save a line plot of cumulative estimated play hours for a game."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     plt.figure(figsize=(12, 6))

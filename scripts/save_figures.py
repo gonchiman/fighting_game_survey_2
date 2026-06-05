@@ -17,6 +17,7 @@ from fighting_game_analysis.visualization.plots import (
 
 
 def main() -> None:
+    """Create player trend figures for configured games from saved CSV files."""
     for game in GAMES:
         df = load_monthly_stats_csv(game)
         df = clean_monthly_stats(df)

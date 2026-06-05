@@ -2,6 +2,7 @@ import pandas as pd
 
 
 def clean_monthly_stats(df: pd.DataFrame) -> pd.DataFrame:
+    """Clean Steam Charts monthly stats into dated, numeric, chronological rows."""
     df = df.copy()
 
     df = df[df["Month"] != "Last 30 Days"].copy()

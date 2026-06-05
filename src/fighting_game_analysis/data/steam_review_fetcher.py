@@ -4,6 +4,7 @@ from fighting_game_analysis.config.urls import STEAM_REVIEWS_BASE_URL
 
 
 def fetch_review_summary(app_id: int) -> dict:
+    """Fetch Steam review summary metadata for an app."""
     url = f"{STEAM_REVIEWS_BASE_URL}{app_id}"
     params = {
         "json": 1,

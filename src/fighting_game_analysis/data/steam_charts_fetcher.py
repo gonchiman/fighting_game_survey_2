@@ -9,6 +9,7 @@ from fighting_game_analysis.config.urls import STEAM_CHARTS_APP_BASE_URL
 
 
 def fetch_monthly_stats(game: Game) -> pd.DataFrame:
+    """Fetch the Steam Charts monthly stats table for a game."""
     url = urljoin(STEAM_CHARTS_APP_BASE_URL, str(game.app_id))
 
     with sync_playwright() as p:
@@ -36,6 +37,7 @@ def fetch_monthly_stats(game: Game) -> pd.DataFrame:
 
 
 def save_monthly_stats_csv(game: Game) -> None:
+    """Fetch and save a game's monthly Steam Charts stats as a CSV file."""
     game.csv_path.parent.mkdir(parents=True, exist_ok=True)
 
     df = fetch_monthly_stats(game)
