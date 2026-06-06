@@ -18,6 +18,16 @@ AVG_PLAYERS_COLUMN = "Avg. Players"
 ESTIMATED_PLAY_HOURS_COLUMN = "Estimated Play Hours"
 CUMULATIVE_PLAY_HOURS_COLUMN = "Cumulative Estimated Play Hours"
 
+MODE_TOTAL = "総和"
+MODE_EACH = "それぞれの累積値"
+MODE_SINGLE = "選択したタイトルのみ"
+
+PLOT_MODES = [
+    MODE_TOTAL,
+    MODE_EACH,
+    MODE_SINGLE,
+]
+
 
 st.set_page_config(
     page_title="Cumulative Play Hours",
@@ -166,14 +176,10 @@ def create_cumulative_plot(df: pd.DataFrame):
 
 plot_mode = st.radio(
     "表示モード",
-    options=[
-        "総和",
-        "それぞれの累積値",
-        "選択したタイトルのみ",
-    ],
+    options=PLOT_MODES,
 )
 
-if plot_mode == "選択したタイトルのみ":
+if plot_mode == MODE_SINGLE:
     selected_game = st.selectbox(
         "表示するタイトル",
         options=GAMES,
@@ -197,10 +203,10 @@ if not selected_games:
 
 
 try:
-    if plot_mode == "総和":
+    if plot_mode == MODE_TOTAL:
         cumulative_df = create_total_cumulative_df(selected_games)
 
-    elif plot_mode == "それぞれの累積値":
+    elif plot_mode == MODE_EACH:
         cumulative_df = create_each_cumulative_df(selected_games)
 
     else:
