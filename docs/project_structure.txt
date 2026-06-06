@@ -1,0 +1,124 @@
+C:.
+│  .gitignore
+│  app.py
+│  pyproject.toml
+│
+├─.pytest_cache
+│  │  .gitignore
+│  │  CACHEDIR.TAG
+│  │  README.md
+│  │
+│  └─v
+│      └─cache
+│              nodeids
+│
+├─data
+│  └─raw
+│          dragon_ball_fighterz.csv
+│          fatal_fury_city_of_the_wolves.csv
+│          granblue_fantasy_versus.csv
+│          granblue_fantasy_versus_rising.csv
+│          guilty_gear__strive_.csv
+│          jojos_bizarre_adventure_all_star_battle_r.csv
+│          mortal_kombat_11.csv
+│          soulcalibur_vi.csv
+│          street_fighter_6.csv
+│          street_fighter_v.csv
+│          tekken_7.csv
+│          tekken_8.csv
+│
+├─outputs
+│  └─figures
+│      ├─avg_players
+│      │      dragon_ball_fighterz.png
+│      │      granblue_fantasy_versus_rising.png
+│      │      guilty_gear__strive_.png
+│      │      mortal_kombat_11.png
+│      │      soulcalibur_vi.png
+│      │      street_fighter_6.png
+│      │      street_fighter_v.png
+│      │      tekken_7.png
+│      │      tekken_8.png
+│      │
+│      └─cumulative_play_hours
+│              dragon_ball_fighterz.png
+│              granblue_fantasy_versus_rising.png
+│              guilty_gear__strive_.png
+│              mortal_kombat_11.png
+│              soulcalibur_vi.png
+│              street_fighter_6.png
+│              street_fighter_v.png
+│              tekken_7.png
+│              tekken_8.png
+│
+├─pages
+│  │  1_Cumulative_Play_Hours.py
+│  │  2_Avg_Players_Trend.py
+│  │
+│  └─__pycache__
+│          1_Cumulative_Play_Hours.cpython-314.pyc
+│          2_Avg_Players_Trend.cpython-314.pyc
+│
+├─reports
+│  └─analysis_of_monthly_average_players_trend
+│      │  Report.docx
+│      │
+│      └─figures
+│              5fd1a1aafd799c476df918695343a305.png
+│
+├─scripts
+│      estimate_sales.py
+│      fetch_all.py
+│      save_figures.py
+│
+├─src
+│  └─fighting_game_analysis
+│      ├─analysis
+│      │  │  playtime.py
+│      │  │  sales_estimator.py
+│      │  │
+│      │  └─__pycache__
+│      │          playtime.cpython-314.pyc
+│      │          sales_estimator.cpython-314.pyc
+│      │
+│      ├─config
+│      │  │  games.py
+│      │  │  paths.py
+│      │  │  urls.py
+│      │  │
+│      │  └─__pycache__
+│      │          games.cpython-314.pyc
+│      │          paths.cpython-314.pyc
+│      │          urls.cpython-314.pyc
+│      │
+│      ├─data
+│      │  │  steam_charts_cleaner.py
+│      │  │  steam_charts_fetcher.py
+│      │  │  steam_charts_loader.py
+│      │  │  steam_review_fetcher.py
+│      │  │
+│      │  └─__pycache__
+│      │          steam_charts.cpython-314.pyc
+│      │          steam_charts_cleaner.cpython-314.pyc
+│      │          steam_charts_fetcher.cpython-314.pyc
+│      │          steam_charts_loader.cpython-314.pyc
+│      │          steam_review_fetcher.cpython-314.pyc
+│      │
+│      └─visualization
+│          │  plots.py
+│          │
+│          └─__pycache__
+│                  plots.cpython-314.pyc
+│
+├─tests
+│  │  test_analysis.py
+│  │  test_steam_charts_cleaner.py
+│  │  test_steam_review_fetcher.py
+│  │
+│  └─__pycache__
+│          test_analysis.cpython-314-pytest-9.0.3.pyc
+│          test_steam_charts_cleaner.cpython-314-pytest-9.0.3.pyc
+│          test_steam_review_fetcher.cpython-314-pytest-9.0.3.pyc
+│
+└─__pycache__
+        app.cpython-314.pyc
