@@ -23,6 +23,13 @@ st.write(
     "格闘ゲームのプレイヤー数推移と累積推定プレイ時間を可視化するアプリです。"
 )
 
+
+st.subheader("Pages")
+
+st.page_link("pages/1_Cumulative_Play_Hours.py", label="Cumulative Play Hours")
+st.page_link("pages/2_Avg_Players_Trend.py", label="Avg Players Trend")
+
+
 st.subheader("Data Update")
 
 selected_games = st.multiselect(
@@ -42,15 +49,3 @@ if st.button("選択したタイトルのCSVを更新"):
             save_monthly_stats_csv(game)
 
     st.success("CSVを更新しました。")
-
-st.subheader("Pages")
-
-st.page_link("pages/1_Cumulative_Play_Hours.py", label="Cumulative Play Hours")
-st.page_link("pages/2_Avg_Players_Trend.py", label="Avg Players Trend")
-
-st.subheader("Available Games")
-
-for game in GAMES:
-    csv_path = Path(game.csv_path)
-    status = "存在" if csv_path.exists() else "未作成"
-    st.write(f"- {game.title}: `{csv_path}` ({status})")
