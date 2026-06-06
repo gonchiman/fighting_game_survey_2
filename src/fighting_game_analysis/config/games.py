@@ -11,7 +11,13 @@ class Game:
 
     @property
     def csv_path(self) -> Path:
-        filename = self.title.lower().replace(" ", "_").replace(":", "").replace("-", "_")
+        filename = (
+            self.title.lower()
+            .replace(" ", "_")
+            .replace(":", "")
+            .replace("-", "_")
+            .replace("'", "")
+        )
         return RAW_DATA_DIR / f"{filename}.csv"
 
 
@@ -25,6 +31,8 @@ MAIN_GAMES = [
     Game("Street Fighter 6", 1364780),
     Game("TEKKEN 8", 1778820),
     Game("Granblue Fantasy Versus: Rising", 2157560),
+    Game("JoJo's Bizarre Adventure: All-Star Battle R", 1372110),
+    Game("FATAL FURY: City of the Wolves", 2492040),
 ]
 
 EXCLUDED_GAMES = [

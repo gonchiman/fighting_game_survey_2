@@ -16,6 +16,14 @@ from fighting_game_analysis.config.games import GAMES
 MONTH_COLUMN = "Month"
 AVG_PLAYERS_COLUMN = "Avg. Players"
 
+MODE_EACH = "それぞれの推移"
+MODE_SINGLE = "選択したタイトルのみ"
+
+PLOT_MODES = [
+    MODE_EACH,
+    MODE_SINGLE,
+]
+
 
 st.set_page_config(
     page_title="Avg Players Trend",
@@ -92,13 +100,10 @@ def create_avg_players_plot(games):
 
 plot_mode = st.radio(
     "表示モード",
-    options=[
-        "それぞれの推移",
-        "選択したタイトルのみ",
-    ],
+    options=PLOT_MODES,
 )
 
-if plot_mode == "選択したタイトルのみ":
+if plot_mode == MODE_SINGLE:
     selected_game = st.selectbox(
         "表示するタイトル",
         options=GAMES,
