@@ -38,6 +38,9 @@ blob-report/
 outputs/
 /data/
 
+# Reports
+reports/
+
 # OS/editor files
 .DS_Store
 Thumbs.db
