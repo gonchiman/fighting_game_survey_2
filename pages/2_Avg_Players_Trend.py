@@ -136,3 +136,18 @@ except FileNotFoundError as e:
 st.subheader("Avg. Players Graph")
 
 st.pyplot(fig)
+
+
+st.subheader("Data")
+
+display_df = pd.concat(
+    [load_game_df(game) for game in selected_games],
+    ignore_index=True,
+)
+
+display_df["Date"] = display_df["Date"].dt.strftime("%Y-%m")
+
+st.dataframe(
+    display_df,
+    hide_index=True,
+)
