@@ -215,29 +215,3 @@ st.subheader("Cumulative Graph")
 
 fig = create_cumulative_plot(cumulative_df)
 st.pyplot(fig)
-
-
-st.subheader("Cumulative Analysis Data")
-
-display_df = cumulative_df.copy()
-display_df["Date"] = display_df["Date"].dt.strftime("%Y-%m")
-
-st.dataframe(
-    display_df,
-    hide_index=True,
-)
-
-csv = display_df.to_csv(index=False, encoding="utf-8-sig")
-
-file_name = {
-    "総和": "total_cumulative_play_hours.csv",
-    "それぞれの累積値": "each_cumulative_play_hours.csv",
-    "選択したタイトルのみ": "single_title_cumulative_play_hours.csv",
-}[plot_mode]
-
-st.download_button(
-    label="CSVをダウンロード",
-    data=csv,
-    file_name=file_name,
-    mime="text/csv",
-)
