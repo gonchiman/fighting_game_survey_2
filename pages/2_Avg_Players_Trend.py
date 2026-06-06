@@ -75,20 +75,39 @@ def create_avg_players_plot(games):
         )
 
     ax.set_title("Monthly Average Players")
-    ax.set_xlabel("Month")
+    ax.set_xlabel("Year")
     ax.set_ylabel("Avg. Players")
+
     ax.xaxis.set_major_locator(mdates.YearLocator(1))
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
     ax.tick_params(axis="x", rotation=90)
 
     ax.grid(True)
     ax.legend()
+
     fig.tight_layout()
 
     return fig
 
 
-with st.sidebar:
+plot_mode = st.radio(
+    "表示モード",
+    options=[
+        "それぞれの推移",
+        "選択したタイトルのみ",
+    ],
+)
+
+if plot_mode == "選択したタイトルのみ":
+    selected_game = st.selectbox(
+        "表示するタイトル",
+        options=GAMES,
+        format_func=lambda game: game.title,
+    )
+
+    selected_games = [selected_game]
+
+else:
     selected_games = st.multiselect(
         "表示するタイトル",
         options=GAMES,
@@ -96,9 +115,11 @@ with st.sidebar:
         format_func=lambda game: game.title,
     )
 
+
 if not selected_games:
     st.warning("少なくとも1つのタイトルを選択してください。")
     st.stop()
+
 
 try:
     fig = create_avg_players_plot(selected_games)
@@ -106,38 +127,7 @@ except FileNotFoundError as e:
     st.error(str(e))
     st.stop()
 
+
 st.subheader("Avg. Players Graph")
 
 st.pyplot(fig)
-
-st.subheader("Raw Data")
-
-with st.sidebar:
-    selected_table_game = st.selectbox(
-        "表を表示するタイトル",
-        options=selected_games,
-        format_func=lambda game: game.title,
-    )
-
-try:
-    table_df = load_game_df(selected_table_game)
-except FileNotFoundError as e:
-    st.error(str(e))
-    st.stop()
-
-display_df = table_df.copy()
-display_df["Date"] = display_df["Date"].dt.strftime("%Y-%m")
-
-st.dataframe(
-    display_df,
-    hide_index=True,
-)
-
-csv = display_df.to_csv(index=False, encoding="utf-8-sig")
-
-st.download_button(
-    label="表示中タイトルのCSVをダウンロード",
-    data=csv,
-    file_name=f"{selected_table_game.title}_avg_players.csv",
-    mime="text/csv",
-)
