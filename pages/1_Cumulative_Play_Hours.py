@@ -79,7 +79,37 @@ def load_game_df(game) -> pd.DataFrame:
     ]
 
 
-def create_cumulative_df(games) -> pd.DataFrame:
+def create_total_cumulative_df(games) -> pd.DataFrame:
+    dfs = [load_game_df(game) for game in games]
+
+    all_df = pd.concat(dfs, ignore_index=True)
+
+    total_df = (
+        all_df.groupby("Date", as_index=False)[ESTIMATED_PLAY_HOURS_COLUMN]
+        .sum()
+        .sort_values("Date")
+        .reset_index(drop=True)
+    )
+
+    total_df["Title"] = "Total"
+    total_df[MONTH_COLUMN] = total_df["Date"].dt.strftime("%B %Y")
+
+    total_df[CUMULATIVE_PLAY_HOURS_COLUMN] = total_df[
+        ESTIMATED_PLAY_HOURS_COLUMN
+    ].cumsum()
+
+    return total_df[
+        [
+            "Title",
+            "Date",
+            MONTH_COLUMN,
+            ESTIMATED_PLAY_HOURS_COLUMN,
+            CUMULATIVE_PLAY_HOURS_COLUMN,
+        ]
+    ]
+
+
+def create_each_cumulative_df(games) -> pd.DataFrame:
     dfs = []
 
     for game in games:
@@ -118,7 +148,7 @@ def create_cumulative_plot(df: pd.DataFrame):
             label=title,
         )
 
-    ax.set_title("Cumulative Estimated Play Hours by Title")
+    ax.set_title("Cumulative Estimated Play Hours")
     ax.set_xlabel("Year")
     ax.set_ylabel("Cumulative Estimated Play Hours")
 
@@ -134,7 +164,25 @@ def create_cumulative_plot(df: pd.DataFrame):
     return fig
 
 
-with st.sidebar:
+plot_mode = st.radio(
+    "表示モード",
+    options=[
+        "総和",
+        "それぞれの累積値",
+        "選択したタイトルのみ",
+    ],
+)
+
+if plot_mode == "選択したタイトルのみ":
+    selected_game = st.selectbox(
+        "表示するタイトル",
+        options=GAMES,
+        format_func=lambda game: game.title,
+    )
+
+    selected_games = [selected_game]
+
+else:
     selected_games = st.multiselect(
         "分析対象タイトル",
         options=GAMES,
@@ -142,20 +190,32 @@ with st.sidebar:
         format_func=lambda game: game.title,
     )
 
+
 if not selected_games:
     st.warning("少なくとも1つのタイトルを選択してください。")
     st.stop()
 
+
 try:
-    cumulative_df = create_cumulative_df(selected_games)
+    if plot_mode == "総和":
+        cumulative_df = create_total_cumulative_df(selected_games)
+
+    elif plot_mode == "それぞれの累積値":
+        cumulative_df = create_each_cumulative_df(selected_games)
+
+    else:
+        cumulative_df = create_each_cumulative_df(selected_games)
+
 except FileNotFoundError as e:
     st.error(str(e))
     st.stop()
+
 
 st.subheader("Cumulative Graph")
 
 fig = create_cumulative_plot(cumulative_df)
 st.pyplot(fig)
+
 
 st.subheader("Cumulative Analysis Data")
 
@@ -169,9 +229,15 @@ st.dataframe(
 
 csv = display_df.to_csv(index=False, encoding="utf-8-sig")
 
+file_name = {
+    "総和": "total_cumulative_play_hours.csv",
+    "それぞれの累積値": "each_cumulative_play_hours.csv",
+    "選択したタイトルのみ": "single_title_cumulative_play_hours.csv",
+}[plot_mode]
+
 st.download_button(
     label="CSVをダウンロード",
     data=csv,
-    file_name="cumulative_play_hours.csv",
+    file_name=file_name,
     mime="text/csv",
 )
