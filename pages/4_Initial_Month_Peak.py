@@ -13,6 +13,17 @@ sys.path.append(str(SRC_DIR))
 from fighting_game_analysis.config.games import GAMES
 
 
+GAME_BY_TITLE = {
+    game.title: game
+    for game in GAMES
+}
+
+
+def get_display_title(game) -> str:
+    latest_game = GAME_BY_TITLE.get(game.title, game)
+    return getattr(latest_game, "display_title", latest_game.title)
+
+
 def load_initial_month_peak(game) -> dict:
     df = pd.read_csv(game.csv_path)
 
@@ -35,6 +46,7 @@ def load_initial_month_peak(game) -> dict:
 
     return {
         "Game": game.title,
+        "Display Game": get_display_title(game),
         "Initial Month": initial_month["Month"],
         "Initial Peak Players": initial_month["Peak Players"],
         "Initial Avg. Players": initial_month["Avg. Players"],
@@ -47,7 +59,7 @@ selected_games = st.multiselect(
     "Select games",
     options=GAMES,
     default=GAMES,
-    format_func=lambda game: game.title,
+    format_func=get_display_title,
 )
 
 rows = [
@@ -68,13 +80,14 @@ else:
     fig, ax = plt.subplots(figsize=(10, 6))
 
     ax.barh(
-        df_result["Game"],
+        df_result["Display Game"],
         df_result["Initial Peak Players"],
     )
 
     ax.set_title("Initial Month Peak Players")
     ax.set_xlabel("Peak Players")
     ax.set_ylabel("Game")
+    ax.tick_params(axis="y", labelsize=8)
 
     for i, value in enumerate(df_result["Initial Peak Players"]):
         ax.text(value, i, f" {int(value):,}", va="center")
