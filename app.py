@@ -23,26 +23,25 @@ st.write(
     "格闘ゲームのプレイヤー数推移と累積推定プレイ時間を可視化するアプリです。"
 )
 
-with st.sidebar:
-    st.header("Data Update")
+st.subheader("Data Update")
 
-    selected_games = st.multiselect(
-        "更新するタイトル",
-        options=GAMES,
-        default=GAMES,
-        format_func=lambda game: game.title,
-    )
+selected_games = st.multiselect(
+    "更新するタイトル",
+    options=GAMES,
+    default=GAMES,
+    format_func=lambda game: game.title,
+)
 
-    if st.button("選択したタイトルのCSVを更新"):
-        if not selected_games:
-            st.warning("少なくとも1つのタイトルを選択してください。")
-            st.stop()
+if st.button("選択したタイトルのCSVを更新"):
+    if not selected_games:
+        st.warning("少なくとも1つのタイトルを選択してください。")
+        st.stop()
 
-        with st.spinner("Steam Charts からデータを取得中..."):
-            for game in selected_games:
-                save_monthly_stats_csv(game)
+    with st.spinner("Steam Charts からデータを取得中..."):
+        for game in selected_games:
+            save_monthly_stats_csv(game)
 
-        st.success("CSVを更新しました。")
+    st.success("CSVを更新しました。")
 
 st.subheader("Pages")
 
