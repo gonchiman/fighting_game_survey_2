@@ -71,7 +71,6 @@ def create_avg_players_plot(games):
         ax.plot(
             df["Date"],
             df[AVG_PLAYERS_COLUMN],
-            marker="o",
             label=game.title,
         )
 

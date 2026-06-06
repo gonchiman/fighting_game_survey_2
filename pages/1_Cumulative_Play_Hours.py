@@ -79,31 +79,27 @@ def load_game_df(game) -> pd.DataFrame:
     ]
 
 
-def create_total_df(games) -> pd.DataFrame:
+def create_cumulative_df(games) -> pd.DataFrame:
     dfs = []
 
     for game in games:
-        dfs.append(load_game_df(game))
+        df = load_game_df(game)
 
-    all_df = pd.concat(dfs, ignore_index=True)
+        df[CUMULATIVE_PLAY_HOURS_COLUMN] = df[
+            ESTIMATED_PLAY_HOURS_COLUMN
+        ].cumsum()
 
-    total_df = (
-        all_df.groupby("Date", as_index=False)[ESTIMATED_PLAY_HOURS_COLUMN]
-        .sum()
-        .sort_values("Date")
-        .reset_index(drop=True)
-    )
+        dfs.append(df)
 
-    total_df[CUMULATIVE_PLAY_HOURS_COLUMN] = total_df[
-        ESTIMATED_PLAY_HOURS_COLUMN
-    ].cumsum()
+    cumulative_df = pd.concat(dfs, ignore_index=True)
 
-    total_df[MONTH_COLUMN] = total_df["Date"].dt.strftime("%B %Y")
-
-    return total_df[
+    return cumulative_df[
         [
+            "Title",
             "Date",
             MONTH_COLUMN,
+            AVG_PLAYERS_COLUMN,
+            "Hours In Month",
             ESTIMATED_PLAY_HOURS_COLUMN,
             CUMULATIVE_PLAY_HOURS_COLUMN,
         ]
@@ -113,20 +109,26 @@ def create_total_df(games) -> pd.DataFrame:
 def create_cumulative_plot(df: pd.DataFrame):
     fig, ax = plt.subplots(figsize=(12, 6))
 
-    ax.plot(
-        df["Date"],
-        df[CUMULATIVE_PLAY_HOURS_COLUMN],
-        marker="o",
-    )
+    for title, game_df in df.groupby("Title"):
+        game_df = game_df.sort_values("Date")
 
-    ax.set_title("Cumulative Estimated Play Hours")
-    ax.set_xlabel("Month")
+        ax.plot(
+            game_df["Date"],
+            game_df[CUMULATIVE_PLAY_HOURS_COLUMN],
+            label=title,
+        )
+
+    ax.set_title("Cumulative Estimated Play Hours by Title")
+    ax.set_xlabel("Year")
     ax.set_ylabel("Cumulative Estimated Play Hours")
+
     ax.xaxis.set_major_locator(mdates.YearLocator(1))
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
     ax.tick_params(axis="x", rotation=90)
 
     ax.grid(True)
+    ax.legend()
+
     fig.tight_layout()
 
     return fig
@@ -145,19 +147,19 @@ if not selected_games:
     st.stop()
 
 try:
-    total_df = create_total_df(selected_games)
+    cumulative_df = create_cumulative_df(selected_games)
 except FileNotFoundError as e:
     st.error(str(e))
     st.stop()
 
 st.subheader("Cumulative Graph")
 
-fig = create_cumulative_plot(total_df)
+fig = create_cumulative_plot(cumulative_df)
 st.pyplot(fig)
 
-st.subheader("Total Analysis Data")
+st.subheader("Cumulative Analysis Data")
 
-display_df = total_df.copy()
+display_df = cumulative_df.copy()
 display_df["Date"] = display_df["Date"].dt.strftime("%Y-%m")
 
 st.dataframe(
