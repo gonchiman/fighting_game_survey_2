@@ -57,7 +57,6 @@ def load_initial_peak_and_stable_avg(game, stable_start_month: int) -> dict:
         "Display Game": get_display_title(game),
         "Initial Month": initial_month["Month"],
         "Initial Peak Players": initial_month["Peak Players"],
-        "Initial Avg. Players": initial_month["Avg. Players"],
         "Stable Start Month": stable_start_month,
         "Stable Avg. Players": stable_avg_players,
         "Stable / Initial Peak Ratio": stable_ratio,
