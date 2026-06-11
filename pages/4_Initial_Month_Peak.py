@@ -188,6 +188,18 @@ fig.tight_layout()
 
 st.pyplot(fig)
 
+st.subheader("Stable / Initial Peak Ratio")
+
+stable_divided_by_initial_peak_df = df_result.set_index("Display Game")[
+    ["Stable / Initial Peak Ratio"]
+]
+sorted_stable_divided_by_initial_peak_df = stable_divided_by_initial_peak_df.sort_values(
+    by="Stable / Initial Peak Ratio",
+    ascending=False
+)
+
+st.bar_chart(sorted_stable_divided_by_initial_peak_df, sort=False)
+
 st.dataframe(
     df_result,
     hide_index=True,
