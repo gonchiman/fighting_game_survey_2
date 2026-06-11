@@ -186,6 +186,8 @@ ax.invert_yaxis()
 
 fig.tight_layout()
 
+st.subheader("Initial Peak Players vs Stable Average Players")
+
 st.pyplot(fig)
 
 st.subheader("Stable / Initial Peak Ratio")
