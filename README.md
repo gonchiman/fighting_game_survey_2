@@ -42,12 +42,6 @@ python -m pip install -e .
 python -m pip install streamlit pytest
 ```
 
-Playwright を使う処理を実行する場合は、ブラウザもインストールします。
-
-```powershell
-python -m playwright install
-```
-
 ## Streamlit アプリの起動
 
 ```powershell
