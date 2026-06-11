@@ -45,7 +45,8 @@ st.dataframe(
             "Percentile Rank",
         ]
     ],
-    use_container_width=True
+    use_container_width=True,
+    hide_index=True
 )
 
 st.subheader("Summary")
