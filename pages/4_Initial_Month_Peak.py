@@ -18,13 +18,25 @@ GAME_BY_TITLE = {
     for game in GAMES
 }
 
+SUCCESSOR_RELEASE_MONTHS = {
+    "Street Fighter V": pd.Timestamp("2023-06-01"),
+    "TEKKEN 7": pd.Timestamp("2024-01-01"),
+    "Mortal Kombat 11": pd.Timestamp("2023-09-01"),
+    "Granblue Fantasy: Versus": pd.Timestamp("2023-12-01"),
+    "Granblue Fantasy Versus": pd.Timestamp("2023-12-01"),
+}
+
 
 def get_display_title(game) -> str:
     latest_game = GAME_BY_TITLE.get(game.title, game)
     return getattr(latest_game, "display_title", latest_game.title)
 
 
-def load_initial_peak_and_stable_avg(game, stable_start_month: int) -> dict:
+def load_initial_peak_and_stable_avg(
+    game,
+    stable_start_month: int,
+    exclude_after_successor: bool,
+) -> dict:
     df = pd.read_csv(game.csv_path)
 
     df = df[df["Month"] != "Last 30 Days"].copy()
@@ -43,14 +55,23 @@ def load_initial_peak_and_stable_avg(game, stable_start_month: int) -> dict:
     df = df.sort_values("Date").reset_index(drop=True)
 
     initial_month = df.iloc[0]
-    stable_df = df.iloc[stable_start_month - 1:]
+    stable_df = df.iloc[stable_start_month - 1:].copy()
+
+    successor_release_month = SUCCESSOR_RELEASE_MONTHS.get(game.title)
+
+    if exclude_after_successor and successor_release_month is not None:
+        stable_df = stable_df[stable_df["Date"] < successor_release_month]
 
     if stable_df.empty:
         stable_avg_players = None
         stable_ratio = None
+        stable_period_months = 0
+        stable_end_month = None
     else:
         stable_avg_players = stable_df["Avg. Players"].mean()
         stable_ratio = stable_avg_players / initial_month["Peak Players"]
+        stable_period_months = len(stable_df)
+        stable_end_month = stable_df.iloc[-1]["Month"]
 
     return {
         "Game": game.title,
@@ -58,6 +79,16 @@ def load_initial_peak_and_stable_avg(game, stable_start_month: int) -> dict:
         "Initial Month": initial_month["Month"],
         "Initial Peak Players": initial_month["Peak Players"],
         "Stable Start Month": stable_start_month,
+        "Stable End Month": stable_end_month,
+        "Stable Period Months": stable_period_months,
+        "Successor Release Month": (
+            successor_release_month.strftime("%B %Y")
+            if successor_release_month is not None
+            else None
+        ),
+        "Successor Period Excluded": (
+            exclude_after_successor and successor_release_month is not None
+        ),
         "Stable Avg. Players": stable_avg_players,
         "Stable / Initial Peak Ratio": stable_ratio,
     }
@@ -72,8 +103,9 @@ stable_start_month = st.slider(
     value=7,
 )
 
-st.caption(
-    f"The stable period is calculated from the {stable_start_month}th month after release."
+exclude_after_successor = st.checkbox(
+    "Exclude months after successor release",
+    value=True,
 )
 
 selected_games = st.multiselect(
@@ -84,7 +116,11 @@ selected_games = st.multiselect(
 )
 
 rows = [
-    load_initial_peak_and_stable_avg(game, stable_start_month)
+    load_initial_peak_and_stable_avg(
+        game,
+        stable_start_month,
+        exclude_after_successor,
+    )
     for game in selected_games
 ]
 
@@ -120,11 +156,15 @@ ax.barh(
     label="Initial Peak Players",
 )
 
+stable_label = f"Stable Avg. Players ({stable_start_month}th month onward)"
+if exclude_after_successor:
+    stable_label += ", before successor release"
+
 ax.barh(
     stable_y_positions,
     df_result["Stable Avg. Players"],
     height=bar_height,
-    label=f"Stable Avg. Players ({stable_start_month}th month onward)",
+    label=stable_label,
 )
 
 ax.set_yticks(y_positions)
